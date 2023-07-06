@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Display</title>
+</head>
+<body>
+  <p id="currentTime">Current Time: 0000-00-00 00:00:00</p>
+  <p id="timer">Timer: 00:00:00</p>
+  <button onclick="startTimer()">Start Timer</button>
+  <button onclick="stopTimer()">Stop Timer</button>
+  <button onclick="resetTimer()">Reset Timer</button>
+  <p>Countdown:</p>
+  <input type="number" id="countdownHours" placeholder="Enter hours">
+  <input type="number" id="countdownMinutes" placeholder="Enter minutes">
+  <input type="number" id="countdownSeconds" placeholder="Enter seconds">
+  <button onclick="startCountdown()">Start Countdown</button>
+  <p id="countdown">Countdown: 00:00:00</p>
+  <script>
+    const currentTimeDisplay = document.getElementById('currentTime');
+    const timerDisplay = document.getElementById('timer');
+    const countdownDisplay = document.getElementById('countdown');
+    const countdownHoursInput = document.getElementById('countdownHours');
+    const countdownMinutesInput = document.getElementById('countdownMinutes');
+    const countdownSecondsInput = document.getElementById('countdownSeconds');
+    let timerInterval;
+    let countdownInterval;
+
+    function updateTime() {
+      const now = new Date();
+      currentTimeDisplay.textContent = `Current Time: ${formatDate(now)}`;
+    }
+
+    setInterval(updateTime, 1000);
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
+
+      return `${year}-${padNumber(month)}-${padNumber(day)} ${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+    }
+
+    let timerSeconds = 0;
+
+    function startTimer() {
+      if (!timerInterval) {
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          displayTimer();
+        }, 1000);
+      }
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timerSeconds = 0;
+      displayTimer();
+    }
+
+    function displayTimer() {
+      const hours = Math.floor(timerSeconds / 3600);
+      const minutes = Math.floor((timerSeconds % 3600) / 60);
+      const seconds = timerSeconds % 60;
+
+      timerDisplay.textContent = `Timer: ${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+    }
+
+    function padNumber(number) {
+      return number.toString().padStart(2, '0');
+    }
+
+    let countdownSeconds = 0;
+
+    function startCountdown() {
+      const hours = parseInt(countdownHoursInput.value) || 0;
+      const minutes = parseInt(countdownMinutesInput.value) || 0;
+      const seconds = parseInt(countdownSecondsInput.value) || 0;
+
+      countdownSeconds = hours * 3600 + minutes * 60 + seconds;
+      clearInterval(countdownInterval);
+      countdownInterval = setInterval(() => {
+        if (countdownSeconds <= 0) {
+          clearInterval(countdownInterval);
+          countdownDisplay.textContent = "Countdown: Time's up!";
+          playAlertSound();
+        } else {
+          countdownSeconds--;
+          displayCountdown();
+        }
+      }, 1000);
+    }
+
+    function displayCountdown() {
+      const hours = Math.floor(countdownSeconds / 3600);
+      const minutes = Math.floor((countdownSeconds % 3600) / 60);
+      const seconds = countdownSeconds % 60;
+
+      countdownDisplay.textContent = `Countdown: ${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+    }
+
+    function playAlertSound() {
+      const audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
+      audio.play();
+    }
+  </script>
+</body>
+</html>
