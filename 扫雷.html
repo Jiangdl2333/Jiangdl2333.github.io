@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <style>
+        .grid {
+            display: inline-grid;
+            grid-template-columns: repeat(10, 20px);
+            grid-gap: 1px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            user-select: none;
+        }
+        .cell {
+            width: 20px;
+            height: 20px;
+            background-color: #ccc;
+            text-align: center;
+            line-height: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid" class="grid"></div>
+
+    <script>
+        const mineCount = 20;
+        const gridSize = 10;
+        let grid = [];
+        let revealedCount = 0;
+
+        function generateGrid() {
+            for (let i = 0; i < gridSize; i++) {
+                grid[i] = [];
+                for (let j = 0; j < gridSize; j++) {
+                    grid[i][j] = { hasMine: false, revealed: false, flagged: false, count: 0 };
+                }
+            }
+
+            let minesPlaced = 0;
+            while (minesPlaced < mineCount) {
+                let x = Math.floor(Math.random() * gridSize);
+                let y = Math.floor(Math.random() * gridSize);
+                if (!grid[x][y].hasMine) {
+                    grid[x][y].hasMine = true;
+                    minesPlaced++;
+                }
+            }
+
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (grid[i][j].hasMine) {
+                        for (let x = i - 1; x <= i + 1; x++) {
+                            for (let y = j - 1; y <= j + 1; y++) {
+                                if (x >= 0 && x < gridSize && y >= 0 && y < gridSize && !grid[x][y].hasMine) {
+                                    grid[x][y].count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function revealCell(x, y) {
+            if (x >= 0 && x < gridSize && y >= 0 && y < gridSize && !grid[x][y].revealed && !grid[x][y].flagged) {
+                grid[x][y].revealed = true;
+                revealedCount++;
+
+                if (grid[x][y].count === 0 && !grid[x][y].hasMine) {
+                    for (let i = x - 1; i <= x + 1; i++) {
+                        for (let j = y - 1; j <= y + 1; j++) {
+                            if (i !== x || j !== y) {
+                                revealCell(i, j);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function createCellElement(x, y) {
+            const cell = document.createElement("div");
+            cell.className = "cell";
+            cell.onmousedown = (event) => {
+                if (event.button === 0) {
+                    if (grid[x][y].hasMine) {
+                        alert("Game Over!");
+                        location.reload();
+                    } else {
+                        revealCell(x, y);
+                        updateGrid();
+                    }
+                } else if (event.button === 2) {
+                    event.preventDefault();
+                    grid[x][y].flagged = !grid[x][y].flagged;
+                    updateGrid();
+                }
+            };
+            cell.oncontextmenu = (event) => event.preventDefault();
+            return cell;
+        }
+
+        function updateGrid() {
+            const gridElement = document.getElementById("grid");
+            gridElement.innerHTML = "";
+
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = createCellElement(i, j);
+
+                    if (grid[i][j].revealed) {
+                        cell.style.backgroundColor = "#fff";
+                        if (grid[i][j].count > 0 && !grid[i][j].hasMine) {
+                            cell.textContent = grid[i][j].count;
+                        }
+                    } else if (grid[i][j].flagged) {
+                        cell.textContent = "F";
+                    }
+
+                    gridElement.appendChild(cell);
+                }
+            }
+
+            if (revealedCount === gridSize * gridSize - mineCount) {
+                alert("You won!");
+                location.reload();
+            }
+        }
+
+        generateGrid();
+        updateGrid();
+    </script>
+</body>
+</html>
