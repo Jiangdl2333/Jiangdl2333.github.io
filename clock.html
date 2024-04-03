@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Time Display</title>
+<style type="text/css">
+#made {
+	color: #3CC;
+}
+.thank {
+	font-family: "Comic Sans MS", cursive;
+	color: #939;
+}
+</style>
 </head>
 <body>
-  <p id="currentTime">Current Time: 0000-00-00 00:00:00</p>
-  <p id="timer">Timer: 00:00:00</p>
+  <h1 id="made">Made By JRH</h1>
+  <h2>Current Time: 0000-00-00 00:00:00</h2>
+  <h2 id="timer">Timer: 00:00:00</h2>
   <button onclick="startTimer()">Start Timer</button>
   <button onclick="stopTimer()">Stop Timer</button>
   <button onclick="resetTimer()">Reset Timer</button>
@@ -17,7 +27,8 @@
   <input type="number" id="countdownSeconds" placeholder="Enter seconds">
   <button onclick="startCountdown()">Start Countdown</button>
   <p id="countdown">Countdown: 00:00:00</p>
-  <script>
+ <span class="thank">Thanks to:Yzl Gys Dhy Qjq Cxm</span>
+ <script>
     const currentTimeDisplay = document.getElementById('currentTime');
     const timerDisplay = document.getElementById('timer');
     const countdownDisplay = document.getElementById('countdown');
