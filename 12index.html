@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>112班 · 渊能 | 鹰隼涌进</title>
+    <style>
+        /* 全局重置与主题变量 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+        }
+
+        :root {
+            /* 渊能主题色：深邃蓝（渊）+ 活力橙（鹰隼）+ 青绿（共生） */
+            --yuan-dark: #1a365d;    /* 渊 - 深邃 */
+            --yuan-main: #2563eb;    /* 渊 - 核心 */
+            --sun-energy: #f97316;   /* 能 - 活力 */
+            --falcon: #f59e0b;       /* 鹰隼 - 锋芒 */
+            --symbiosis: #10b981;    /* 共生 - 生机 */
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            
+            /* 渐变：渊能 - 从深邃到迸发 */
+            --yuan-gradient: linear-gradient(135deg, var(--yuan-dark), var(--yuan-main));
+            /* 渐变：鹰隼 - 锋芒渐显 */
+            --falcon-gradient: linear-gradient(135deg, var(--falcon), var(--sun-energy));
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶部导航 - 渊能底色+鹰隼点缀 */
+        .navbar {
+            background: var(--yuan-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .class-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* 鹰隼图标 - 纯CSS绘制 */
+        .falcon-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            background: var(--falcon-gradient);
+            clip-path: polygon(
+                50% 0%, 
+                70% 20%, 
+                100% 30%, 
+                80% 50%, 
+                100% 70%, 
+                70% 80%, 
+                50% 100%, 
+                30% 80%, 
+                0% 70%, 
+                20% 50%, 
+                0% 30%, 
+                30% 20%
+            );
+            animation: falcon-hover 3s infinite ease-in-out;
+        }
+
+        @keyframes falcon-hover {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .class-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+
+        .class-name span {
+            background: var(--falcon-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--falcon-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 英雄区 - 鹰隼涌进视觉核心 */
+        .hero {
+            height: 80vh;
+            background: var(--yuan-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            padding: 2rem;
+        }
+
+        /* 背景装饰 - 鹰隼阵列（纯CSS） */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--falcon) 0.5px, transparent 0.5px),
+                radial-gradient(circle at 90% 80%, var(--symbiosis) 0.5px, transparent 0.5px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .slogan {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: 5px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            animation: slogan-fade 1.5s ease-out;
+        }
+
+        @keyframes slogan-fade {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .slogan span {
+            background: var(--falcon-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .class-motto {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .class-desc {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.85;
+        }
+
+        /* 核心内容区 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        /* 标题样式 */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--yuan-dark);
+            display: inline-block;
+            padding-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--falcon-gradient);
+            border-radius: 2px;
+        }
+
+        /* 渊能内核板块 */
+        .yuan-energy {
+            margin-bottom: 6rem;
+        }
+
+        .energy-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .energy-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--yuan-main);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .energy-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: var(--yuan-gradient);
+            opacity: 0.05;
+            border-radius: 0 0 0 100px;
+            transition: opacity 0.3s ease;
+        }
+
+        .energy-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .energy-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .energy-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            color: var(--yuan-dark);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* 内核图标 - 纯CSS */
+        .energy-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--falcon-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .energy-card p {
+            color: var(--gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* 鹰隼精神板块 */
+        .falcon-spirit {
+            background: var(--yuan-dark);
+            color: white;
+            padding: 5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .falcon-spirit::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, rgba(245, 158, 11, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .falcon-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .falcon-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .falcon-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* 序号装饰 */
+        .item-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--falcon-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .item-content h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--falcon);
+        }
+
+        .item-content p {
+            opacity: 0.85;
+            line-height: 1.8;
+        }
+
+        /* 班级荣誉板块 */
+        .honor {
+            text-align: center;
+        }
+
+        .honor-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 2px solid var(--yuan-main);
+        }
+
+        .honor-text {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .honor-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .honor-tag {
+            padding: 0.8rem 2rem;
+            background: var(--yuan-gradient);
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .honor-tag:hover {
+            transform: scale(1.05);
+            background: var(--falcon-gradient);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--yuan-dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .footer-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-slogan {
+            font-weight: bold;
+            color: var(--falcon);
+            letter-spacing: 2px;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .slogan {
+                font-size: 3rem;
+            }
+
+            .class-name {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .energy-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .falcon-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .honor-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .honor-tag {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slogan {
+                font-size: 2.2rem;
+            }
+
+            .class-motto {
+                font-size: 1.2rem;
+            }
+
+            .energy-card {
+                padding: 1.8rem;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .falcon-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="class-brand">
+                <div class="falcon-icon"></div>
+                <div class="class-name">112班 · <span>渊能</span></div>
+            </div>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#energy">渊能内核</a>
+                <a href="#spirit">鹰隼精神</a>
+                <a href="#honor">班级荣誉</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="slogan">鹰<span>隼</span>涌进</h1>
+            <p class="class-motto">渊藏万力 · 能聚共生</p>
+            <p class="class-desc">
+                112班以「渊能」为魂，以「鹰隼涌进」为志。
+                如深渊藏力，厚积薄发；如鹰隼击空，一往无前。
+                我们共生共长，聚力前行，以少年意气，书写属于112的热血篇章。
+            </p>
+        </div>
+    </section>
+
+    <!-- 核心内容区 -->
+    <div class="container">
+        <!-- 渊能内核板块 -->
+        <section class="yuan-energy" id="energy">
+            <div class="section-title">
+                <h2>渊能内核</h2>
+            </div>
+            <div class="energy-cards">
+                <div class="energy-card">
+                    <h3>
+                        <div class="energy-icon">渊</div>
+                        渊深致远
+                    </h3>
+                    <p>
+                        「渊」是沉淀，是厚积。我们深耕学业，沉心钻研，如深渊般吸纳知识、积蓄力量；
+                        不浮躁，不盲从，以长远目光规划成长，以扎实脚步夯实基础，静待厚积薄发的时刻。
+                    </p>
+                </div>
+                <div class="energy-card">
+                    <h3>
+                        <div class="energy-icon">能</div>
+                        能聚共生
+                    </h3>
+                    <p>
+                        「能」是力量，是共生。每个人的微光汇聚成112班的星河，我们发挥各自所长，
+                        互补共进，在合作中迸发集体能量，在共生中实现共同成长，让个人价值融入班级荣光。
+                    </p>
+                </div>
+                <div class="energy-card">
+                    <h3>
+                        <div class="energy-icon">合</div>
+                        合而向上
+                    </h3>
+                    <p>
+                        「渊能合一」是我们的底色：以渊的沉稳扎根，以能的活力向上。
+                        既有潜心积累的定力，又有突破进取的魄力，在沉稳与锋芒之间，找到属于112班的成长节奏。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 鹰隼精神板块 -->
+        <section class="falcon-spirit" id="spirit">
+            <div class="section-title">
+                <h2 style="color: white; border-color: var(--falcon);">鹰隼涌进 · 精神内核</h2>
+            </div>
+            <div class="falcon-list">
+                <div class="falcon-item">
+                    <div class="item-number">1</div>
+                    <div class="item-content">
+                        <h4>锐眼洞察</h4>
+                        <p>如鹰隼般目光如炬，精准捕捉学习中的重点，洞察成长中的方向，不迷茫，不偏航，始终朝着目标前行。</p>
+                    </div>
+                </div>
+                <div class="falcon-item">
+                    <div class="item-number">2</div>
+                    <div class="item-content">
+                        <h4>振翅敢为</h4>
+                        <p>如鹰隼击空，不惧挑战，敢于突破舒适区，勇于尝试新可能，在竞争中展现112班的锐气与勇气。</p>
+                    </div>
+                </div>
+                <div class="falcon-item">
+                    <div class="item-number">3</div>
+                    <div class="item-content">
+                        <h4>群飞共进</h4>
+                        <p>鹰隼非独飞，112班非独行。我们彼此呼应，相互扶持，以集体的力量向前涌进，一人先行，众人跟上。</p>
+                    </div>
+                </div>
+                <div class="falcon-item">
+                    <div class="item-number">4</div>
+                    <div class="item-content">
+                        <h4>逆风向上</h4>
+                        <p>遇困境如鹰隼遇逆风，愈挫愈勇，借势而上。把挑战当作成长的阶梯，在逆境中彰显112班的韧性与风骨。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 班级荣誉板块 -->
+        <section class="honor" id="honor">
+            <div class="section-title">
+                <h2>班级荣誉</h2>
+            </div>
+            <div class="honor-box">
+                <p class="honor-text">每一份荣誉，都是渊能的迸发，都是鹰隼涌进的见证</p>
+                <div class="honor-list">
+                    <div class="honor-tag">CBA赛事创始班级</div>
+                    <div class="honor-tag">学风建设示范班级</div>
+                    <div class="honor-tag">体育精神文明班级</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p class="footer-text">112班 · 渊能共生</p>
+        <p class="footer-slogan">鹰隼涌进 · 一往无前</p>
+    </footer>
+</body>
+</html>
