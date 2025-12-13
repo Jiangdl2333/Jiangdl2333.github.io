@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一届112CBA赛事</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        /* 外层容器：负责整体居中+背景，内部用弹性布局分配空间 */
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 50px 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 500px; /* 保证最小高度，适配短正文场景 */
+        }
+
+        /* 正文区域：自动占满空间，推动落款到最底部 */
+        .content {
+            flex: 1;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4299e1;
+        }
+
+        p {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* 重点文字高亮 */
+        .highlight {
+            color: #4299e1;
+            font-weight: 600;
+        }
+
+        /* 落款样式：固定在右下角，不遮挡正文 */
+        .signature {
+            margin-top: 20px;
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.4;
+            text-align: right;
+            align-self: flex-end; /* 靠右对齐 */
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .wrapper {
+                padding: 30px 25px;
+                min-height: 450px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            .signature {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <h1>第一届112CBA赛事</h1>
+            
+            <p>感谢各位对112班CBA赛事的<span class="highlight">鼎力支持与倾情相伴</span>。</p>
+            
+            <p>本次112班CBA赛事，深耕<span class="highlight">“自主创新、自主组织、自主发展”</span>的核心理念，既是班级实践育人、文化育人的生动实例，更是<span class="highlight">“鹰隼涌进”</span>班级口号的鲜活诠释。赛事以弘扬CBA体育精神与班级<span class="highlight">“猎豹精神”</span>为初心，将拼搏进取、团结协作、永不言弃的信念融入每一场竞技之中，充分彰显了112班朝气蓬勃、奋勇争先的班级氛围，是班级以<span class="highlight">“渊能”</span>为核心的文化内核的具象表达与有力传递。</p>
+            
+            <p>与此同时，赛事的成功举办，有效提升了112班在全年级的凝聚力与影响力，进一步擦亮了班级品牌、提升了班级声誉；更以体育为桥、以文化为媒，传递青春正能量，为年级体育文化建设注入新鲜活力，对校园体育氛围的营造、优良校风班风的涵养，均产生了广泛而深远的积极影响。</p>
+        </div>
+
+        <!-- 落款区域：固定右下角，无遮挡 -->
+        <div class="signature">
+            <p>12班宣传部宣</p>
+            <p>2025.12.12</p>
+        </div>
+    </div>
+</body>
+</html>
