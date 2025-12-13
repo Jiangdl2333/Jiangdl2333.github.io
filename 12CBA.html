@@ -17,7 +17,6 @@
             padding: 40px 20px;
         }
 
-        /* 外层容器：负责整体居中+背景，内部用弹性布局分配空间 */
         .wrapper {
             max-width: 800px;
             margin: 0 auto;
@@ -27,10 +26,9 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            min-height: 500px; /* 保证最小高度，适配短正文场景 */
+            min-height: 600px;
         }
 
-        /* 正文区域：自动占满空间，推动落款到最底部 */
         .content {
             flex: 1;
         }
@@ -44,6 +42,14 @@
             border-bottom: 2px solid #4299e1;
         }
 
+        h2 {
+            color: #2d3748;
+            font-size: 20px;
+            margin: 30px 0 15px;
+            padding-left: 8px;
+            border-left: 3px solid #4299e1;
+        }
+
         p {
             color: #4a5568;
             font-size: 16px;
@@ -52,35 +58,54 @@
             text-align: justify;
         }
 
-        /* 重点文字高亮 */
+        .staff-list {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        .staff-list li {
+            margin-bottom: 8px;
+        }
+        .staff-list .position {
+            font-weight: 600;
+            color: #4299e1;
+        }
+
         .highlight {
             color: #4299e1;
             font-weight: 600;
         }
 
-        /* 落款样式：固定在右下角，不遮挡正文 */
         .signature {
             margin-top: 20px;
             color: #4a5568;
             font-size: 15px;
             line-height: 1.4;
             text-align: right;
-            align-self: flex-end; /* 靠右对齐 */
+            align-self: flex-end;
         }
 
-        /* 响应式适配 */
         @media (max-width: 768px) {
             .wrapper {
                 padding: 30px 25px;
-                min-height: 450px;
+                min-height: 550px;
             }
 
             h1 {
                 font-size: 24px;
             }
+            h2 {
+                font-size: 18px;
+            }
 
             p {
                 font-size: 15px;
+            }
+            .staff-list {
+                font-size: 15px;
+                padding-left: 15px;
             }
 
             .signature {
@@ -100,9 +125,17 @@
             <p>本次112班CBA赛事，深耕<span class="highlight">“自主创新、自主组织、自主发展”</span>的核心理念，既是班级实践育人、文化育人的生动实例，更是<span class="highlight">“鹰隼涌进”</span>班级口号的鲜活诠释。赛事以弘扬CBA体育精神与班级<span class="highlight">“猎豹精神”</span>为初心，将拼搏进取、团结协作、永不言弃的信念融入每一场竞技之中，充分彰显了112班朝气蓬勃、奋勇争先的班级氛围，是班级以<span class="highlight">“渊能”</span>为核心的文化内核的具象表达与有力传递。</p>
             
             <p>与此同时，赛事的成功举办，有效提升了112班在全年级的凝聚力与影响力，进一步擦亮了班级品牌、提升了班级声誉；更以体育为桥、以文化为媒，传递青春正能量，为年级体育文化建设注入新鲜活力，对校园体育氛围的营造、优良校风班风的涵养，均产生了广泛而深远的积极影响。</p>
+
+            <h2>特别鸣谢：赛事工作人员</h2>
+            <ul class="staff-list">
+                <li><span class="position">主裁判</span>：FYC、WJH、LZH</li>
+                <li><span class="position">递补主裁判</span>：JRH</li>
+                <li><span class="position">副裁判（边裁）</span>：HYH、FY</li>
+                <li><span class="position">史官</span>：ZZXY</li>
+                <li><span class="position">战地记者</span>：（正在招募）</li>
+            </ul>
         </div>
 
-        <!-- 落款区域：固定右下角，无遮挡 -->
         <div class="signature">
             <p>12班宣传部宣</p>
             <p>2025.12.12</p>
