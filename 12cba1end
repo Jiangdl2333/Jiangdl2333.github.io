@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一届112CBA赛事 · 闭幕致辞</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 50px 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4299e1;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 20px;
+            margin: 30px 0 15px;
+            padding-left: 8px;
+            border-left: 3px solid #4299e1;
+        }
+
+        p {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .staff-list {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        .staff-list li {
+            margin-bottom: 8px;
+        }
+        .staff-list .position {
+            font-weight: 600;
+            color: #4299e1;
+        }
+
+        .highlight {
+            color: #4299e1;
+            font-weight: 600;
+        }
+
+        .signature {
+            margin-top: 20px;
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.4;
+            text-align: right;
+            align-self: flex-end;
+        }
+
+        @media (max-width: 768px) {
+            .wrapper {
+                padding: 30px 25px;
+                min-height: 550px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+            .staff-list {
+                font-size: 15px;
+                padding-left: 15px;
+            }
+
+            .signature {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <h1>第一届112CBA赛事 · 闭幕致辞</h1>
+            
+            <p>旌旗漫卷，赛事收官；热血不散，步履不停。第一届112班CBA赛事圆满落下帷幕，谨向所有参赛选手、工作人员与观赛同学，致以最诚挚的<span class="highlight">感谢与敬意</span>。</p>
+            
+            <p>从开赛时的意气风发，到落幕时的满载而归，本次赛事始终践行<span class="highlight">“自主创新、自主组织、自主发展”</span>的核心理念，将112班<span class="highlight">“鹰隼涌进”</span>的班级口号融入每一次冲刺、每一次协作。赛场上，选手们以<span class="highlight">“猎豹精神”</span>为帆，诠释拼搏的意义；赛场下，工作人员以责任为基，保障赛事的运转——这不仅是一场体育竞技，更是112班<span class="highlight">“渊能”</span>文化的集中展现，是班级凝聚力与向心力的生动见证。</p>
+            
+            <p>赛事虽已落幕，但拼搏的精神永不退场。本次112CBA赛事，不仅为班级体育文化写下了浓墨重彩的一笔，更让“团结、奋进、坚持”的信念深植每一位112人的心中。未来，我们将延续这份热血与热爱，以体育铸魂、以文化聚力，持续擦亮112班的班级品牌，让“鹰隼涌进”的号角始终嘹亮，让“渊能”文化持续生长。</p>
+
+            <h2>鸣谢名单：致每一位同行者</h2>
+            <ul class="staff-list">
+                <li><span class="position">主裁判</span>：FYC、WJH、LZH（公正执裁，守护赛场秩序）</li>
+                <li><span class="position">递补主裁判</span>：JRH（随时补位，保障赛事流畅）</li>
+                <li><span class="position">副裁判（边裁）</span>：HYH、FY（细致判罚，助力赛事公平）</li>
+                <li><span class="position">史官</span>：ZZXY（记录点滴，留存赛事记忆）</li>
+                <li><span class="position">战地记者</span>：（招募中，期待下一程同行）</li>
+                <li><span class="position">主持人</span>：CSZ（控场主持，点燃赛场氛围）</li>
+                <li><span class="position">全体参赛选手</span>：以热爱之名，赴赛场之约</li>
+                <li><span class="position">全体观赛同学</span>：以掌声为伴，为拼搏喝彩</li>
+            </ul>
+
+            <p>聚散终有时，热爱无终点。第一届112CBA赛事的落幕，是终点，更是新的起点。愿112班的每一位同学，都能将赛场上的拼搏与团结，化作成长路上的底气与力量，以鹰隼之姿，奔涌向前；以猎豹之势，永不止步！</p>
+        </div>
+
+        <div class="signature">
+            <p>12班宣传部宣</p>
+            <p>2025.12.20</p>
+        </div>
+    </div>
+</body>
+</html>
