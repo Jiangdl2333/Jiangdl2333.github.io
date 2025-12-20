@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12things - 事件导览总览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4eaf5 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #2d3748;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .header p {
+            color: #718096;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+        }
+        .event-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+        }
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            border-color: #4299e1;
+        }
+        .event-card h3 {
+            color: #2d3748;
+            font-size: 20px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f4f8;
+        }
+        .event-card .desc {
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 15px 0;
+            min-height: 60px;
+        }
+        .event-card .link-btn {
+            display: inline-block;
+            background: #4299e1;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+        .event-card .link-btn:hover {
+            background: #3182ce;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 26px;
+            }
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .event-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>12things - 事件导览总览</h1>
+        <p>点击下方卡片查看各事件详情</p>
+    </div>
+    <div class="container">
+        
+            <div class="event-card">
+                <h3>第一届CBA赛事开幕</h3>
+                <div class="desc">2025.12.12.弘扬CBA和猎豹精神，充分展现渊能风采</div>
+                <a href="https://jiangdl2333.github.io/12CBA.html" target="_blank" class="link-btn">查看详情 →</a>
+            </div>
+        
+    </div>
+</body>
+</html>
