@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>112班 · 生日纪念</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --orange: #f97316;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: var(--dark);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tip {
+            color: var(--gray);
+            font-size: 16px;
+        }
+
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .month-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .month-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .birthday-list {
+            list-style: none;
+        }
+
+        .birthday-item {
+            padding: 6px 0;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .birthday-item.today {
+            color: var(--orange);
+            font-weight: bold;
+        }
+
+        .birthday-item.today::after {
+            content: "🎂 生日快乐";
+            color: var(--orange);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎂 112班 同学生日纪念</h1>
+            <p class="tip">当天生日会自动高亮显示祝福</p>
+        </header>
+
+        <div class="month-grid" id="birthdayContainer"></div>
+
+        <footer>
+            开发者联系方式：js080924@outlook.com
+        </footer>
+    </div>
+
+    <script>
+        // 所有生日数据（已去掉性别）
+        const data = [
+            { name: "孙ZK", date: "0101" },
+            { name: "朱YK", date: "0107" },
+            { name: "彭YSF", date: "0114" },
+            { name: "陈SZ", date: "0127" },
+            { name: "冯YC", date: "0210" },
+            { name: "钱LH", date: "0318" },
+            { name: "潘SX", date: "0320" },
+            { name: "王JR", date: "0401" },
+            { name: "沈YN", date: "0413" },
+            { name: "李JY", date: "0415" },
+            { name: "朱YL", date: "0416" },
+            { name: "赵HY", date: "0417" },
+            { name: "宋CX", date: "0420" },
+            { name: "孙AD", date: "0502" },
+            { name: "郭YM", date: "0503" },
+            { name: "姜JY", date: "0504" },
+            { name: "陈CC", date: "0504" },
+            { name: "骆Y", date: "0509" },
+            { name: "王JJ", date: "0516" },
+            { name: "方MY", date: "0612" },
+            { name: "王YR", date: "0613" },
+            { name: "王CY", date: "0620" },
+            { name: "李PY", date: "0623" },
+            { name: "周RC", date: "0624" },
+            { name: "李HX", date: "0629" },
+            { name: "张XR", date: "0705" },
+            { name: "张JY", date: "0709" },
+            { name: "俞ZY", date: "0710" },
+            { name: "姜RH", date: "0711" },
+            { name: "张JJ", date: "0720" },
+            { name: "冯Y", date: "0803" },
+            { name: "吴ZC", date: "0807" },
+            { name: "余MY", date: "0807" },
+            { name: "张ZXY", date: "0811" },
+            { name: "林ZH", date: "0815" },
+            { name: "周YC", date: "0816" },
+            { name: "钱CY", date: "0819" },
+            { name: "马ZM", date: "0903" },
+            { name: "毕R", date: "0904" },
+            { name: "胡YH", date: "1001" },
+            { name: "任SX", date: "1003" },
+            { name: "徐RY", date: "1106" },
+            { name: "鲁XC", date: "1115" },
+            { name: "李KX", date: "1116" },
+            { name: "高WJ", date: "1123" },
+            { name: "眭YH", date: "1124" },
+            { name: "袁TF", date: "1126" },
+            { name: "袁TX", date: "1126" },
+            { name: "魏JH", date: "1210" },
+            { name: "朱YF", date: "1217" }
+        ];
+
+        // 获取今天 月日（MMDD）
+        const today = new Date();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const todayStr = mm + dd;
+
+        // 按月份分组
+        const months = {};
+        for (let i = 1; i <= 12; i++) {
+            months[String(i).padStart(2, '0')] = [];
+        }
+
+        data.forEach(p => {
+            const month = p.date.slice(0, 2);
+            if (!months[month]) months[month] = [];
+            months[month].push(p);
+        });
+
+        // 渲染页面
+        const container = document.getElementById('birthdayContainer');
+        for (let m = 1; m <= 12; m++) {
+            const monthKey = String(m).padStart(2, '0');
+            const list = months[monthKey] || [];
+
+            const box = document.createElement('div');
+            box.className = 'month-box';
+
+            const title = document.createElement('div');
+            title.className = 'month-title';
+            title.textContent = `${m} 月`;
+            box.appendChild(title);
+
+            const ul = document.createElement('ul');
+            ul.className = 'birthday-list';
+
+            list.forEach(p => {
+                const li = document.createElement('li');
+                li.className = 'birthday-item';
+                if (p.date === todayStr) li.classList.add('today');
+                
+                const dateText = p.date.slice(0, 2) + '-' + p.date.slice(2, 4);
+                li.innerHTML = `<span>${p.name}</span> <span>${dateText}</span>`;
+                ul.appendChild(li);
+            });
+
+            box.appendChild(ul);
+            container.appendChild(box);
+        }
+    </script>
+</body>
+</html>
