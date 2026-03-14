@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -103,6 +102,68 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* 下拉菜单样式 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: var(--falcon-gradient);
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .dropdown-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            z-index: 101;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            list-style: none;
+            padding: 0.8rem 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 0.6rem 1.5rem;
+            color: var(--yuan-dark);
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--yuan-main);
+            padding-left: 1.8rem;
+        }
+
         /* 优化后的赛事详情链接样式 */
         .match-link {
             display: inline-block;
@@ -114,12 +175,22 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 0.5rem 0;
         }
 
         .match-link:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        /* 荣誉标签链接样式 */
+        .honor-tag a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
         /* 英雄区 - 鹰隼涌进视觉核心 */
@@ -426,6 +497,13 @@
             font-weight: bold;
             color: var(--falcon);
             letter-spacing: 2px;
+            margin: 1rem 0;
+        }
+
+        .developer-contact {
+            margin-top: 2rem;
+            font-size: 1rem;
+            opacity: 0.8;
         }
 
         /* 响应式适配 */
@@ -436,6 +514,15 @@
 
             .class-name {
                 font-size: 1.5rem;
+            }
+
+            .dropdown-toggle {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .dropdown-menu {
+                min-width: 180px;
             }
 
             .match-link {
@@ -484,6 +571,15 @@
                 height: 30px;
             }
 
+            .dropdown-toggle {
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-menu {
+                min-width: 160px;
+            }
+
             .match-link {
                 padding: 0.4rem 1rem;
                 font-size: 0.85rem;
@@ -499,8 +595,17 @@
                 <div class="falcon-icon"></div>
                 <div class="class-name">112班 · <span>渊能</span></div>
             </div>
-            <!-- 112事详情超链接 -->
-            <a href="https://jiangdl2333.github.io/jg112/showcase/12things.html" class="match-link" target="_blank">112事件发布</a>
+            <!-- 下拉菜单替换原有链接 -->
+            <div class="dropdown">
+                <div class="dropdown-toggle">112事件发布</div>
+                <ul class="dropdown-menu">
+                    <li><a href="#" class="dropdown-item">权威发布</a></li>
+                    <li><a href="#" class="dropdown-item">统计数据</a></li>
+                    <li><a href="#" class="dropdown-item">更新日志</a></li>
+                    <li><a href="#" class="dropdown-item">词条解释</a></li>
+                    <li><a href="#" class="dropdown-item">相关文件</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -595,7 +700,7 @@
             </div>
         </section>
 
-        <!-- 班级荣誉板块 -->
+        <!-- 班级荣誉板块 - 修改为超链接 -->
         <section class="honor" id="honor">
             <div class="section-title">
                 <h2>班级荣誉</h2>
@@ -603,19 +708,20 @@
             <div class="honor-box">
                 <p class="honor-text">每一份荣誉，都是渊能的迸发，都是鹰隼勇进的见证</p>
                 <div class="honor-list">
-                    <div class="honor-tag">CBA赛事首创班级</div>
-                    <div class="honor-tag">学风建设示范班级</div>
-                    <div class="honor-tag">运动会精神文明班级</div>
+                    <div class="honor-tag"><a href="#" target="_blank">CBA赛事首创班级</a></div>
+                    <div class="honor-tag"><a href="#" target="_blank">学风建设示范班级</a></div>
+                    <div class="honor-tag"><a href="#" target="_blank">运动会精神文明班级</a></div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- 页脚 -->
+    <!-- 页脚 - 添加开发者联系方式 -->
     <footer class="footer">
         <p class="footer-text">112班 · 渊能共生</p>
         <a href="https://jiangdl2333.github.io/jg112/escape.html" class="match-link">逃离猎豹-FY</a>
         <p class="footer-slogan">鹰隼勇进 · 一往无前</p>
+        <div class="developer-contact">开发者联系方式：js080924@outlook.com</div>
     </footer>
 </body>
 </html>
