@@ -74,15 +74,20 @@
         }
 
         .birthday-item {
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 15px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .birthday-item.today {
             color: var(--orange);
             font-weight: bold;
+            padding: 6px 10px;
+            background: #fff7ed;
+            border-radius: 8px;
+            margin: 2px 0;
         }
 
         .birthday-item.today::after {
@@ -90,13 +95,7 @@
             color: var(--orange);
             font-weight: bold;
             font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: var(--gray);
-            font-size: 14px;
+            margin-left: 8px;
         }
     </style>
 </head>
@@ -109,65 +108,116 @@
         </header>
 
         <div class="month-grid" id="birthdayContainer"></div>
-
-        <footer>
-            开发者联系方式：js080924@outlook.com
-        </footer>
     </div>
 
     <script>
-        // 所有生日数据（已去掉性别）
+        // 最终数据：全缩写 + 无重复 + 格式统一
         const data = [
+            // 1月
             { name: "孙ZK", date: "0101" },
             { name: "朱YK", date: "0107" },
             { name: "彭YSF", date: "0114" },
+            { name: "虞SC", date: "0113" },
+            { name: "仝ZY", date: "0114" },
+            { name: "周XY", date: "0120" },
             { name: "陈SZ", date: "0127" },
+            { name: "吴FK", date: "0129" },
+            // 2月
             { name: "冯YC", date: "0210" },
+            { name: "张JY", date: "0216" },
+            // 3月
             { name: "钱LH", date: "0318" },
             { name: "潘SX", date: "0320" },
+            { name: "徐RH", date: "0320" },
+            // 4月
             { name: "王JR", date: "0401" },
-            { name: "沈YN", date: "0413" },
+            { name: "吴T", date: "0402" },
+            { name: "陆PN", date: "0412" },
+            { name: "沈ZN", date: "0413" },
             { name: "李JY", date: "0415" },
             { name: "朱YL", date: "0416" },
             { name: "赵HY", date: "0417" },
             { name: "宋CX", date: "0420" },
+            // 5月
             { name: "孙AD", date: "0502" },
+            { name: "何ZW", date: "0502" },
             { name: "郭YM", date: "0503" },
+            { name: "郭YB", date: "0503" },
             { name: "姜JY", date: "0504" },
             { name: "陈CC", date: "0504" },
             { name: "骆Y", date: "0509" },
+            { name: "刘Y", date: "0513" },
+            { name: "周YN", date: "0514" },
             { name: "王JJ", date: "0516" },
+            { name: "余KR", date: "0518" },
+            { name: "朱YL", date: "0518" },
+            { name: "任YC", date: "0519" },
+            { name: "徐ZH", date: "0523" },
+            { name: "唐YR", date: "0530" },
+            // 6月
+            { name: "包YJ", date: "0605" },
+            { name: "张ZY", date: "0607" },
             { name: "方MY", date: "0612" },
             { name: "王YR", date: "0613" },
             { name: "王CY", date: "0620" },
             { name: "李PY", date: "0623" },
             { name: "周RC", date: "0624" },
             { name: "李HX", date: "0629" },
+            // 7月
+            { name: "黄SB", date: "0701" },
+            { name: "谢ZX", date: "0702" },
             { name: "张XR", date: "0705" },
+            { name: "陈SJ", date: "0706" },
             { name: "张JY", date: "0709" },
             { name: "俞ZY", date: "0710" },
             { name: "姜RH", date: "0711" },
+            { name: "吴YJ", date: "0712" },
             { name: "张JJ", date: "0720" },
+            { name: "陈ZY", date: "0721" },
+            { name: "张MW", date: "0724" },
+            // 8月
             { name: "冯Y", date: "0803" },
             { name: "吴ZC", date: "0807" },
             { name: "余MY", date: "0807" },
             { name: "张ZXY", date: "0811" },
+            { name: "张XY", date: "0814" },
             { name: "林ZH", date: "0815" },
             { name: "周YC", date: "0816" },
+            { name: "梁TX", date: "0818" },
+            { name: "金QF", date: "0818" },
             { name: "钱CY", date: "0819" },
+            { name: "许YC", date: "0822" },
+            { name: "沈YZ", date: "0828" },
+            { name: "张HW", date: "0830" },
+            // 9月
             { name: "马ZM", date: "0903" },
             { name: "毕R", date: "0904" },
+            { name: "郭X", date: "0905" },
+            { name: "倪HC", date: "0919" },
+            { name: "黄JW", date: "0929" },
+            // 10月
             { name: "胡YH", date: "1001" },
             { name: "任SX", date: "1003" },
+            { name: "刘ZQ", date: "1008" },
+            { name: "陈LF", date: "1021" },
+            { name: "吉HR", date: "1028" },
+            // 11月
+            { name: "李HY", date: "1101" },
             { name: "徐RY", date: "1106" },
+            { name: "唐LJ", date: "1114" },
             { name: "鲁XC", date: "1115" },
             { name: "李KX", date: "1116" },
             { name: "高WJ", date: "1123" },
             { name: "眭YH", date: "1124" },
             { name: "袁TF", date: "1126" },
             { name: "袁TX", date: "1126" },
+            // 12月
+            { name: "汤R", date: "1208" },
             { name: "魏JH", date: "1210" },
-            { name: "朱YF", date: "1217" }
+            { name: "顾KQ", date: "1212" },
+            { name: "朱YF", date: "1217" },
+            { name: "杨JY", date: "1228" },
+            { name: "何CY", date: "1231" }
         ];
 
         // 获取今天 月日（MMDD）
@@ -179,12 +229,12 @@
         // 按月份分组
         const months = {};
         for (let i = 1; i <= 12; i++) {
-            months[String(i).padStart(2, '0')] = [];
+            const key = String(i).padStart(2, '0');
+            months[key] = [];
         }
 
         data.forEach(p => {
             const month = p.date.slice(0, 2);
-            if (!months[month]) months[month] = [];
             months[month].push(p);
         });
 
@@ -192,7 +242,7 @@
         const container = document.getElementById('birthdayContainer');
         for (let m = 1; m <= 12; m++) {
             const monthKey = String(m).padStart(2, '0');
-            const list = months[monthKey] || [];
+            const list = months[monthKey];
 
             const box = document.createElement('div');
             box.className = 'month-box';
