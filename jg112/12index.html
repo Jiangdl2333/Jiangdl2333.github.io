@@ -164,6 +164,27 @@
             padding-left: 1.8rem;
         }
 
+        /* 音乐按钮样式（匹配页面主题） */
+        .music-btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: var(--falcon-gradient);
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border: none;
+            margin-left: 1rem;
+        }
+        .music-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
         /* 优化后的赛事详情链接样式 */
         .match-link {
             display: inline-block;
@@ -588,6 +609,12 @@
     </style>
 </head>
 <body>
+    <!-- 背景音乐标签（默认暂停状态） -->
+    <audio id="bgMusic" loop preload="auto">
+        <!-- 在线背景音乐，无需下载，直接可用 -->
+        <source src="https://cdn.freesound.org/previews/411/411888_8755073-lq.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- 顶部导航 -->
     <nav class="navbar">
         <div class="navbar-container">
@@ -595,16 +622,20 @@
                 <div class="falcon-icon"></div>
                 <div class="class-name">112班 · <span>渊能</span></div>
             </div>
-            <!-- 下拉菜单替换原有链接 -->
-            <div class="dropdown">
-                <div class="dropdown-toggle">导览菜单</div>
-                <ul class="dropdown-menu">
-                    <li><a href="https://jiangdl2333.github.io/jg112/showcase/12things.html" class="dropdown-item">权威发布</a></li>
-                    <li><a href="https://jiangdl2333.github.io/jg112/menu/birth.html" class="dropdown-item">统计数据</a></li>
-                    <li><a href="https://jiangdl2333.github.io/jg112/menu/log.txt" class="dropdown-item">更新日志</a></li>
-                    <li><a href="#" class="dropdown-item">词条解释（没做呢）</a></li>
-                    <li><a href="https://jiangdl2333.github.io/jg112/menu/files/lead.html" class="dropdown-item">相关文件</a></li>
-                </ul>
+            <div style="display: flex; align-items: center;">
+                <!-- 下拉菜单 -->
+                <div class="dropdown">
+                    <div class="dropdown-toggle">导览菜单</div>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://jiangdl2333.github.io/jg112/showcase/12things.html" class="dropdown-item">权威发布</a></li>
+                        <li><a href="https://jiangdl2333.github.io/jg112/menu/birth.html" class="dropdown-item">统计数据</a></li>
+                        <li><a href="https://jiangdl2333.github.io/jg112/menu/log.txt" class="dropdown-item">更新日志</a></li>
+                        <li><a href="#" class="dropdown-item">词条解释（没做呢）</a></li>
+                        <li><a href="https://jiangdl2333.github.io/jg112/menu/files/lead.html" class="dropdown-item">相关文件</a></li>
+                    </ul>
+                </div>
+                <!-- 音乐开关按钮 -->
+                <button class="music-btn" onclick="toggleMusic()">🎵 音乐开关</button>
             </div>
         </div>
     </nav>
@@ -617,7 +648,7 @@
             <p class="class-desc">
                 112班以「渊能」为魂，以「鹰隼勇进」为志。
                 如深渊藏力，厚积薄发；如鹰隼击空，一往无前。
-                我们共生共长，聚力前行，以少年意气，书写属于112的热血篇章。
+               我们共生共长，聚力前行，以少年意气，书写属于112的热血篇章。
             </p>
         </div>
     </section>
@@ -722,5 +753,21 @@
         <p class="footer-slogan">鹰隼勇进 · 一往无前</p>
         <div class="developer-contact">开发者联系方式：js080924@outlook.com</div>
     </footer>
+
+    <!-- 音乐控制JS -->
+    <script>
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        // 音乐播放/暂停函数
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+            } else {
+                bgMusic.play();
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
 </body>
 </html>
