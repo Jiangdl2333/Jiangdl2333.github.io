@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生日纪念</title>
+    <title>112班 · 生日纪念</title>
     <style>
         * {
             margin: 0;
@@ -74,20 +74,15 @@
         }
 
         .birthday-item {
-            padding: 8px 0;
+            padding: 6px 0;
             font-size: 15px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
 
         .birthday-item.today {
             color: var(--orange);
             font-weight: bold;
-            padding: 6px 10px;
-            background: #fff7ed;
-            border-radius: 8px;
-            margin: 2px 0;
         }
 
         .birthday-item.today::after {
@@ -95,7 +90,13 @@
             color: var(--orange);
             font-weight: bold;
             font-size: 14px;
-            margin-left: 8px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--gray);
+            font-size: 14px;
         }
     </style>
 </head>
@@ -103,17 +104,21 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎂同学生日纪念</h1>
+            <h1>🎂 112班 同学生日纪念</h1>
             <p class="tip">当天生日会自动高亮显示祝福</p>
         </header>
 
         <div class="month-grid" id="birthdayContainer"></div>
+
+        <footer>
+            开发者联系方式：js080924@outlook.com
+        </footer>
     </div>
 
     <script>
-        // 最终数据：全缩写 + 无重复 + 格式统一
+        // 所有生日数据（已去掉性别）
         const data = [
-            // 1月
+                        // 1月
             { name: "孙ZK", date: "0101" },
             { name: "朱YK", date: "0107" },
             { name: "彭YSF", date: "0114" },
@@ -234,12 +239,12 @@
         // 按月份分组
         const months = {};
         for (let i = 1; i <= 12; i++) {
-            const key = String(i).padStart(2, '0');
-            months[key] = [];
+            months[String(i).padStart(2, '0')] = [];
         }
 
         data.forEach(p => {
             const month = p.date.slice(0, 2);
+            if (!months[month]) months[month] = [];
             months[month].push(p);
         });
 
@@ -247,7 +252,7 @@
         const container = document.getElementById('birthdayContainer');
         for (let m = 1; m <= 12; m++) {
             const monthKey = String(m).padStart(2, '0');
-            const list = months[monthKey];
+            const list = months[monthKey] || [];
 
             const box = document.createElement('div');
             box.className = 'month-box';
