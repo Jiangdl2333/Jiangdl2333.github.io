@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24点游戏（高级版·难度系统）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        success: '#00B42A',
+                        danger: '#F53F3F',
+                        neutral: '#6B7280'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .btn-game { @apply px-4 py-3 rounded-lg font-bold text-white transition-all hover:opacity-90 active:scale-95; }
+            .btn-number { @apply bg-primary text-white; }
+            .btn-number:disabled { @apply bg-gray-400 cursor-not-allowed; }
+            .btn-operator { @apply bg-orange-500 text-white; }
+            .btn-bracket { @apply bg-purple-500 text-white; }
+            .btn-control { @apply bg-neutral text-white; }
+            .expression-box { @apply w-full h-20 p-4 text-xl border-2 border-gray-300 rounded-lg bg-white overflow-x-auto whitespace-nowrap; }
+            .select-difficulty { @apply px-4 py-2 border-2 border-primary rounded-lg text-lg font-semibold text-primary bg-white cursor-pointer; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <h1 class="text-3xl font-bold text-center text-primary mb-2">24点游戏</h1>
+        <p class="text-center text-gray-600 mb-6">使用4个随机数字各一次，算出结果=24即可获胜！</p>
+
+        <!-- 难度选择 + 数字区域 -->
+        <div class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+                <h2 class="text-lg font-semibold">当前难度：</h2>
+                <!-- 难度选择下拉框 -->
+                <select id="difficultySelect" onchange="changeDifficulty()" class="select-difficulty">
+                    <option value="jrh">jrh（新手 0-20）</option>
+                    <option value="prince">小王子（入门 0-50）</option>
+                    <option value="szk">szk（中等 0-80）</option>
+                    <option value="god">神（困难 0-100）</option>
+                    <option value="xing">邢老师（地狱 -50~150）</option>
+                </select>
+            </div>
+
+            <h2 class="text-lg font-semibold mb-3">当前数字：</h2>
+            <div id="numberCards" class="flex gap-4 justify-center flex-wrap mb-4"></div>
+            <button onclick="generateNumbers()" class="btn-game bg-primary mx-auto block">🔄 重新生成数字</button>
+        </div>
+
+        <!-- 算式输入区 -->
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-3">你的算式：</h2>
+            <div id="expression" class="expression-box flex items-center"></div>
+        </div>
+
+        <!-- 操作按钮区 -->
+        <div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6">
+            <button id="numBtn1" onclick="appendToExpression('num1')" class="btn-game btn-number">数字1</button>
+            <button id="numBtn2" onclick="appendToExpression('num2')" class="btn-game btn-number">数字2</button>
+            <button id="numBtn3" onclick="appendToExpression('num3')" class="btn-game btn-number">数字3</button>
+            <button id="numBtn4" onclick="appendToExpression('num4')" class="btn-game btn-number">数字4</button>
+            
+            <button onclick="appendToExpression('+')" class="btn-game btn-operator">+</button>
+            <button onclick="appendToExpression('-')" class="btn-game btn-operator">-</button>
+            <button onclick="appendToExpression('*')" class="btn-game btn-operator">×</button>
+            <button onclick="appendToExpression('/')" class="btn-game btn-operator">÷</button>
+            <button onclick="appendToExpression('√')" class="btn-game btn-operator">√</button>
+            <button onclick="appendToExpression('^')" class="btn-game btn-operator">^</button>
+            
+            <button onclick="appendToExpression('(')" class="btn-game btn-bracket">(</button>
+            <button onclick="appendToExpression(')')" class="btn-game btn-bracket">)</button>
+            
+            <button onclick="clearExpression()" class="btn-game btn-control">清空</button>
+            <button onclick="deleteLastElement()" class="btn-game btn-control">删除</button>
+            <button onclick="calculateResult()" class="btn-game bg-success col-span-3 md:col-span-2">🧮 计算结果</button>
+        </div>
+
+        <!-- 结果展示区 -->
+        <div class="p-4 rounded-lg bg-gray-50 min-h-16 text-center">
+            <p id="resultText" class="text-xl font-semibold">请输入算式并计算</p>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-500">
+            <p>✅ 规则：4个数字各用1次，支持加减乘除、根号、次方、括号</p>
+            <p>✅ 优化：每个数字为独立整体，删除/输入不会组合成新数字</p>
+            <p>✅ 难度：jrh→小王子→szk→神→邢老师（逐级提升）</p>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let gameNumbers = [];          // 存储4个随机数字
+        let expressionElements = [];   // 存储独立元素（完整数字/符号/括号）
+        let usedNumbers = [false, false, false, false]; // 记录数字是否已使用
+        let currentDifficulty = 'jrh'; // 默认难度
+
+        // 难度配置：数字范围
+        const difficultyConfig = {
+            jrh: { min: 0, max: 20 },
+            prince: { min: 0, max: 50 },
+            szk: { min: 0, max: 80 },
+            god: { min: 0, max: 100 },
+            xing: { min: -50, max: 150 } // 邢老师专属难度
+        };
+
+        // 切换难度
+        function changeDifficulty() {
+            const select = document.getElementById('difficultySelect');
+            currentDifficulty = select.value;
+            generateNumbers(); // 切换难度自动重新生成数字
+        }
+
+        // 1. 根据难度生成随机数字
+        function generateNumbers() {
+            gameNumbers = [];
+            usedNumbers = [false, false, false, false];
+            const { min, max } = difficultyConfig[currentDifficulty];
+            
+            for (let i = 0; i < 4; i++) {
+                // 生成指定范围的随机整数（支持负数）
+                const num = Math.floor(Math.random() * (max - min + 1)) + min;
+                gameNumbers.push(num);
+            }
+            
+            renderNumberCards();
+            updateNumberButtons();
+            clearExpression();
+            document.getElementById('resultText').textContent = '请输入算式并计算';
+            document.getElementById('resultText').className = 'text-xl font-semibold';
+        }
+
+        // 2. 渲染数字卡片
+        function renderNumberCards() {
+            const container = document.getElementById('numberCards');
+            container.innerHTML = '';
+            gameNumbers.forEach(num => {
+                const card = document.createElement('div');
+                card.className = 'w-16 h-16 bg-primary text-white rounded-lg flex items-center justify-center text-2xl font-bold shadow';
+                card.textContent = num;
+                container.appendChild(card);
+            });
+        }
+
+        // 3. 更新数字按钮状态（已使用则禁用）
+        function updateNumberButtons() {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`numBtn${i+1}`).disabled = usedNumbers[i];
+            }
+        }
+
+        // 4. 添加元素到算式（独立元素，不拆分）
+        function appendToExpression(char) {
+            if (char.startsWith('num')) {
+                const index = parseInt(char.replace('num', '')) - 1;
+                if (usedNumbers[index]) return;
+                
+                expressionElements.push(gameNumbers[index].toString());
+                usedNumbers[index] = true;
+                updateNumberButtons();
+            } else {
+                expressionElements.push(char);
+            }
+            renderExpression();
+        }
+
+        // 5. 渲染算式
+        function renderExpression() {
+            const exprBox = document.getElementById('expression');
+            exprBox.textContent = expressionElements.length > 0 
+                ? expressionElements.join('  ') 
+                : '请点击按钮输入算式';
+        }
+
+        // 6. 清空算式
+        function clearExpression() {
+            expressionElements = [];
+            usedNumbers = [false, false, false, false];
+            updateNumberButtons();
+            renderExpression();
+        }
+
+        // 7. 删除最后一个完整元素
+        function deleteLastElement() {
+            if (expressionElements.length === 0) return;
+            
+            const lastElement = expressionElements.pop();
+            const numIndex = gameNumbers.findIndex(num => num.toString() === lastElement);
+            if (numIndex !== -1) {
+                usedNumbers[numIndex] = false;
+                updateNumberButtons();
+            }
+            renderExpression();
+        }
+
+        // 8. 计算结果
+        function calculateResult() {
+            if (expressionElements.length === 0) {
+                showResult('请先输入算式', 'danger');
+                return;
+            }
+
+            try {
+                let expr = expressionElements.join('')
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/')
+                    .replace(/√(\d+\.?\d*)/g, 'Math.sqrt($1)')
+                    .replace(/(\d+\.?\d*)\^(\d+\.?\d*)/g, 'Math.pow($1,$2)');
+
+                const result = eval(expr);
+
+                if (Math.abs(result - 24) < 0.001) {
+                    showResult(`🎉 计算成功！结果 = ${result.toFixed(2)}，你赢了！`, 'success');
+                } else {
+                    showResult(`❌ 结果 = ${result.toFixed(2)}，不等于24，再试试！`, 'danger');
+                }
+
+            } catch (error) {
+                showResult('❌ 算式格式错误，请检查后重试！', 'danger');
+                console.error('计算错误：', error);
+            }
+        }
+
+        // 9. 显示结果
+        function showResult(text, type) {
+            const resultEl = document.getElementById('resultText');
+            resultEl.textContent = text;
+            resultEl.className = `text-xl font-semibold text-${type}`;
+        }
+
+        // 初始化
+        window.onload = generateNumbers;
+    </script>
+</body>
+</html>
