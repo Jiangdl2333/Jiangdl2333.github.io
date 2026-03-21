@@ -37,6 +37,48 @@
             overflow-x: hidden;
         }
 
+        /* 悬浮音乐球 - 核心样式 */
+        .music-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--falcon-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 9999; /* 确保在最上层 */
+        }
+        .music-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        /* 音乐名称提示 */
+        .music-float::after {
+            content: "Civilization6";
+            position: absolute;
+            right: 70px;
+            white-space: nowrap;
+            background: var(--yuan-dark);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .music-float:hover::after {
+            opacity: 1;
+        }
+
         /* 顶部导航 - 渊能底色+鹰隼点缀 */
         .navbar {
             background: var(--yuan-gradient);
@@ -162,27 +204,6 @@
             background-color: rgba(37, 99, 235, 0.1);
             color: var(--yuan-main);
             padding-left: 1.8rem;
-        }
-
-        /* 音乐按钮样式（匹配页面主题） */
-        .music-btn {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            background: var(--falcon-gradient);
-            color: white !important;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            cursor: pointer;
-            border: none;
-            margin-left: 1rem;
-        }
-        .music-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-            background: linear-gradient(135deg, #f97316, #ea580c);
         }
 
         /* 优化后的赛事详情链接样式 */
@@ -568,6 +589,14 @@
                 padding: 0.6rem 1.5rem;
                 font-size: 0.9rem;
             }
+            /* 手机端悬浮球缩小 */
+            .music-float {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -609,11 +638,13 @@
     </style>
 </head>
 <body>
-    <!-- 背景音乐标签（默认暂停状态） -->
+    <!-- 背景音乐标签（默认暂停状态 + 你指定的音乐链接） -->
     <audio id="bgMusic" loop preload="auto">
-        <!-- 在线背景音乐，无需下载，直接可用 -->
         <source src="https://jiangdl2333.github.io/music/MainMenu.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- 悬浮音乐球 -->
+    <div class="music-float" id="musicBtn" onclick="toggleMusic()">▶️</div>
 
     <!-- 顶部导航 -->
     <nav class="navbar">
@@ -622,20 +653,16 @@
                 <div class="falcon-icon"></div>
                 <div class="class-name">112班 · <span>渊能</span></div>
             </div>
-            <div style="display: flex; align-items: center;">
-                <!-- 下拉菜单 -->
-                <div class="dropdown">
-                    <div class="dropdown-toggle">导览菜单</div>
-                    <ul class="dropdown-menu">
-                        <li><a href="https://jiangdl2333.github.io/jg112/showcase/12things.html" class="dropdown-item">权威发布</a></li>
-                        <li><a href="https://jiangdl2333.github.io/jg112/menu/birth.html" class="dropdown-item">统计数据</a></li>
-                        <li><a href="https://jiangdl2333.github.io/jg112/menu/log.txt" class="dropdown-item">更新日志</a></li>
-                        <li><a href="#" class="dropdown-item">词条解释（没做呢）</a></li>
-                        <li><a href="https://jiangdl2333.github.io/jg112/menu/files/lead.html" class="dropdown-item">相关文件</a></li>
-                    </ul>
-                </div>
-                <!-- 音乐开关按钮 -->
-                <button class="music-btn" onclick="toggleMusic()">🎵 音乐开关</button>
+            <!-- 下拉菜单 -->
+            <div class="dropdown">
+                <div class="dropdown-toggle">导览菜单</div>
+                <ul class="dropdown-menu">
+                    <li><a href="https://jiangdl2333.github.io/jg112/showcase/12things.html" class="dropdown-item">权威发布</a></li>
+                    <li><a href="https://jiangdl2333.github.io/jg112/menu/birth.html" class="dropdown-item">统计数据</a></li>
+                    <li><a href="https://jiangdl2333.github.io/jg112/menu/log.txt" class="dropdown-item">更新日志</a></li>
+                    <li><a href="#" class="dropdown-item">词条解释（没做呢）</a></li>
+                    <li><a href="https://jiangdl2333.github.io/jg112/menu/files/lead.html" class="dropdown-item">相关文件</a></li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -664,7 +691,7 @@
                 <div class="energy-card">
                     <h3>
                         <div class="energy-icon">渊</div>
-                        渊深致远
+                       渊深致远
                     </h3>
                     <p>
                         「渊」是沉淀，是厚积。我们深耕学业，沉心钻研，如深渊般吸纳知识、积蓄力量；
@@ -674,7 +701,7 @@
                 <div class="energy-card">
                     <h3>
                         <div class="energy-icon">能</div>
-                        能聚共生
+                       能聚共生
                     </h3>
                     <p>
                         「能」是力量，是共生。每个人的微光汇聚成112班的星河，我们发挥各自所长，
@@ -684,7 +711,7 @@
                 <div class="energy-card">
                     <h3>
                         <div class="energy-icon">合</div>
-                        合而向上
+                       合而向上
                     </h3>
                     <p>
                         「渊能合一」是我们的底色：以渊的沉稳扎根，以能的活力向上。
@@ -754,17 +781,20 @@
         <div class="developer-contact">开发者联系方式：js080924@outlook.com</div>
     </footer>
 
-    <!-- 音乐控制JS -->
+    <!-- 音乐控制JS - 图标切换 + 播放暂停 -->
     <script>
         const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
         let isPlaying = false;
 
-        // 音乐播放/暂停函数
+        // 音乐播放/暂停 + 图标切换
         function toggleMusic() {
             if (isPlaying) {
                 bgMusic.pause();
+                musicBtn.textContent = "▶️"; // 暂停图标
             } else {
                 bgMusic.play();
+                musicBtn.textContent = "⏸️"; // 播放图标
             }
             isPlaying = !isPlaying;
         }
