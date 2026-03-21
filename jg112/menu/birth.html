@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>112班 · 生日纪念</title>
+    <title>生日纪念</title>
     <style>
         * {
             margin: 0;
@@ -79,6 +79,7 @@
             display: flex;
             justify-content: space-between;
             gap: 8px;
+            align-items: center;
         }
 
         .birthday-item.today {
@@ -134,7 +135,43 @@
     </div>
 
     <script>
-        // 新版完整生日数据（含性别，日期转为MMDD）
+        // 汉字拼音首字母映射表（覆盖所有学生姓名）
+        const charMap = {
+            '旭':'X','浩':'H','程':'C','璟':'J','雯':'W','熠':'Y','华':'H','杜':'D','桥':'Q',
+            '鸾':'L','飞':'F','海':'H','瑞':'R','李':'L','俊':'J','可':'K','欣':'X','睿':'R',
+            '康':'K','祈':'Q','季':'J','烨':'Y','承':'C','佑':'Y','泽':'Z','楷':'K','翊':'Y',
+            '驰':'C','志':'Z','远':'Y','新':'X','沂':'Y','思':'S','泽':'Z','芳':'F','凯':'K',
+            '锦':'J','洋':'Y','睿':'R','涵':'H','靖':'J','睿':'R','瞳':'T','沛':'P','凝':'N',
+            '子':'Z','诺':'N','锦':'J','渝':'Y','雨':'Y','岚':'L','知':'Z','炜':'W','煜':'Y',
+            '溟':'M','俊':'J','宇':'Y','辰':'C','臣':'C','毅':'Y','羿':'Y','一':'Y','诺':'N',
+            '楷':'K','瑞':'R','月':'Y','缡':'L','宇':'Y','宸':'C','梓':'Z','晗':'H','远':'Y',
+            '睿':'R','烨':'Y','嘉':'J','朱':'Z','逸':'Y','瑞':'R','翀':'C','世':'S','博':'B',
+            '子':'Z','询':'X','世':'S','杰':'J','汝':'R','衡':'H','俣':'Y','洁':'J','致':'Z',
+            '铭':'M','威':'W','梦':'M','瑶':'Y','心':'X','怡':'Y','唐':'T','轩':'X','圻':'Q',
+            '霏':'F','翌':'Y','晨':'C','宥':'Y','泽':'Z','浩':'H','文':'W','翊':'Y','恺':'K',
+            '杨':'Y','已':'Y','凡':'F','姚':'Y','宸':'C','乐':'L','航':'H','思':'S','轩':'X',
+            '昊':'H','昱':'Y','陈':'C','轩':'X','安':'A','迪':'D','嘉':'J','俊':'J','墨':'M',
+            '言':'Y','悦':'Y','然':'R','宸':'C','岩':'Y','彭':'P','宇':'Y','皓':'H','旭':'X',
+            '锐':'R','嘉':'J','寅':'Y','泽':'Z','洋':'Y','金':'J','璇':'X','羿':'Y','紫':'Z',
+            '宸':'C','哲':'Z','夏':'X','煜':'Y','子':'Z','赫':'H','昱':'Y','成':'C','晨':'C',
+            '玥':'Y','子':'Z','茗':'M','毕':'B','然':'R','思':'S','学':'X','睿':'R','彧':'Y',
+            '晓':'X','晨':'C','雯':'W','婕':'J','宇':'Y','浩':'H','庭':'T','丰':'F','庭':'T',
+            '轩':'X','嘉':'J','豪':'H','宇':'Y','帆':'F'
+        };
+
+        // 姓名处理函数：保留姓，名字取首字母
+        function formatName(fullName) {
+            if (!fullName) return '';
+            const surname = fullName[0]; // 第一个字是姓
+            const givenNames = fullName.slice(1); // 后面的是名
+            let initials = '';
+            for (let char of givenNames) {
+                initials += charMap[char] || char;
+            }
+            return surname + initials;
+        }
+
+        // 学生数据
         const data = [
             { name: "郭旭", gender: "男", date: "0905" },
             { name: "倪浩程", gender: "男", date: "0919" },
@@ -230,7 +267,7 @@
             { name: "朱宇帆", gender: "男", date: "1217" }
         ];
 
-        // 获取今天 月日（MMDD）
+        // 获取今日日期
         const today = new Date();
         const mm = String(today.getMonth() + 1).padStart(2, '0');
         const dd = String(today.getDate()).padStart(2, '0');
@@ -271,9 +308,11 @@
                 if (p.date === todayStr) li.classList.add('today');
                 
                 const dateText = p.date.slice(0, 2) + '-' + p.date.slice(2, 4);
-                // 渲染姓名+性别+日期
+                // 调用函数格式化姓名
+                const showName = formatName(p.name);
+                
                 li.innerHTML = `
-                    <span>${p.name}</span>
+                    <span>${showName}</span>
                     <span class="gender-badge ${p.gender === '男' ? 'male' : 'female'}">${p.gender}</span>
                     <span>${dateText}</span>
                 `;
