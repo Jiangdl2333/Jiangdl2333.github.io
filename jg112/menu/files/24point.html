@@ -13,7 +13,7 @@
                         primary: '#165DFF',
                         success: '#00B42A',
                         danger: '#F53F3F',
-                        neutral: '#6B7280'
+                        neutral: '#6B748B'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui']
@@ -34,8 +34,68 @@
             .select-difficulty { @apply px-4 py-2 border-2 border-primary rounded-lg text-lg font-semibold text-primary bg-white cursor-pointer; }
         }
     </style>
+    <style>
+        /* 悬浮音乐球 - 与之前样式完全一致 */
+        .music-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        .music-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        /* 音乐名称提示 */
+        .music-float::after {
+            content: "China_Industrial";
+            position: absolute;
+            right: 70px;
+            white-space: nowrap;
+            background: #1a1a1a;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .music-float:hover::after {
+            opacity: 1;
+        }
+        /* 手机端适配 */
+        @media (max-width: 768px) {
+            .music-float {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4 md:p-8">
+    <!-- 背景音乐标签（指定新音乐链接 + 默认暂停） -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://jiangdl2333.github.io/music/China_Industrial.mp3" type="audio/mpeg">
+    </audio>
+    <!-- 悬浮音乐球 -->
+    <div class="music-float" id="musicBtn" onclick="toggleMusic()">▶️</div>
+
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
         <h1 class="text-3xl font-bold text-center text-primary mb-2">24点游戏</h1>
         <p class="text-center text-gray-600 mb-6">使用4个随机数字各一次，算出结果=24即可获胜！</p>
@@ -44,13 +104,12 @@
         <div class="mb-8">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                 <h2 class="text-lg font-semibold">当前难度：</h2>
-                <!-- 难度选择下拉框 -->
                 <select id="difficultySelect" onchange="changeDifficulty()" class="select-difficulty">
-                    <option value="jrh">jrh（新手 0-20）</option>
-                    <option value="prince">小王子（入门 0-50）</option>
-                    <option value="szk">szk（中等 0-80）</option>
-                    <option value="god">神（困难 0-100）</option>
-                    <option value="xing">邢老师（地狱 -50~150）</option>
+                    <option value="jrh">jrh（新手 0-10）</option>
+                    <option value="prince">小王子（入门 2个0-10+2个0-20）</option>
+                    <option value="szk">szk（中等 2个10-20+2个随机）</option>
+                    <option value="god">神（困难 2个10-30+2个0-10）</option>
+                    <option value="xing">邢老师（地狱 -10~30）</option>
                 </select>
             </div>
 
@@ -95,45 +154,89 @@
         <div class="mt-6 text-sm text-gray-500">
             <p>✅ 规则：4个数字各用1次，支持加减乘除、根号、次方、括号</p>
             <p>✅ 优化：每个数字为独立整体，删除/输入不会组合成新数字</p>
-            <p>✅ 难度：jrh→小王子→szk→神→邢老师（逐级提升）</p>
+            <p>✅ 智能：后台自动验证有解才生成，永远不会遇到无解题目</p>
         </div>
     </div>
 
     <script>
         // 全局变量
-        let gameNumbers = [];          // 存储4个随机数字
-        let expressionElements = [];   // 存储独立元素（完整数字/符号/括号）
-        let usedNumbers = [false, false, false, false]; // 记录数字是否已使用
-        let currentDifficulty = 'jrh'; // 默认难度
+        let gameNumbers = [];          
+        let expressionElements = [];   
+        let usedNumbers = [false, false, false, false];
+        let currentDifficulty = 'jrh';
 
-        // 难度配置：数字范围
-        const difficultyConfig = {
-            jrh: { min: 0, max: 20 },
-            prince: { min: 0, max: 50 },
-            szk: { min: 0, max: 80 },
-            god: { min: 0, max: 100 },
-            xing: { min: -50, max: 150 } // 邢老师专属难度
-        };
+        // 生成随机数工具
+        function getRandomNum(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 24点有解验证算法
+        function hasSolution(nums) {
+            let arr = nums.map(Number);
+            const operators = ['+', '-', '*', '/'];
+            
+            function dfs(numbers) {
+                const len = numbers.length;
+                if (len === 1) return Math.abs(numbers[0] - 24) < 0.001;
+
+                for (let i = 0; i < len; i++) {
+                    for (let j = 0; j < len; j++) {
+                        if (i === j) continue;
+                        const a = numbers[i], b = numbers[j];
+                        const rest = numbers.filter((_, idx) => idx !== i && idx !== j);
+                        
+                        for (let op of operators) {
+                            let res;
+                            if (op === '+') res = a + b;
+                            else if (op === '-') res = a - b;
+                            else if (op === '*') res = a * b;
+                            else if (op === '/') {
+                                if (Math.abs(b) < 0.001) continue;
+                                res = a / b;
+                            }
+                            if (dfs([...rest, res])) return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            return dfs(arr);
+        }
 
         // 切换难度
         function changeDifficulty() {
             const select = document.getElementById('difficultySelect');
             currentDifficulty = select.value;
-            generateNumbers(); // 切换难度自动重新生成数字
+            generateNumbers();
         }
 
-        // 1. 根据难度生成随机数字
+        // 按规则生成数字
         function generateNumbers() {
-            gameNumbers = [];
+            do {
+                gameNumbers = [];
+                switch(currentDifficulty) {
+                    case 'jrh':
+                        for(let i=0;i<4;i++) gameNumbers.push(getRandomNum(0,10));
+                        break;
+                    case 'prince':
+                        gameNumbers.push(getRandomNum(0,10),getRandomNum(0,10));
+                        gameNumbers.push(getRandomNum(0,20),getRandomNum(0,20));
+                        break;
+                    case 'szk':
+                        gameNumbers.push(getRandomNum(10,20),getRandomNum(10,20));
+                        gameNumbers.push(getRandomNum(0,20),getRandomNum(0,20));
+                        break;
+                    case 'god':
+                        gameNumbers.push(getRandomNum(10,30),getRandomNum(10,30));
+                        gameNumbers.push(getRandomNum(0,10),getRandomNum(0,10));
+                        break;
+                    case 'xing':
+                        for(let i=0;i<4;i++) gameNumbers.push(getRandomNum(-10,30));
+                        break;
+                }
+            } while (!hasSolution(gameNumbers));
+            
             usedNumbers = [false, false, false, false];
-            const { min, max } = difficultyConfig[currentDifficulty];
-            
-            for (let i = 0; i < 4; i++) {
-                // 生成指定范围的随机整数（支持负数）
-                const num = Math.floor(Math.random() * (max - min + 1)) + min;
-                gameNumbers.push(num);
-            }
-            
             renderNumberCards();
             updateNumberButtons();
             clearExpression();
@@ -141,7 +244,7 @@
             document.getElementById('resultText').className = 'text-xl font-semibold';
         }
 
-        // 2. 渲染数字卡片
+        // 渲染数字
         function renderNumberCards() {
             const container = document.getElementById('numberCards');
             container.innerHTML = '';
@@ -153,14 +256,14 @@
             });
         }
 
-        // 3. 更新数字按钮状态（已使用则禁用）
+        // 更新按钮状态
         function updateNumberButtons() {
             for (let i = 0; i < 4; i++) {
                 document.getElementById(`numBtn${i+1}`).disabled = usedNumbers[i];
             }
         }
 
-        // 4. 添加元素到算式（独立元素，不拆分）
+        // 添加算式元素
         function appendToExpression(char) {
             if (char.startsWith('num')) {
                 const index = parseInt(char.replace('num', '')) - 1;
@@ -175,7 +278,7 @@
             renderExpression();
         }
 
-        // 5. 渲染算式
+        // 渲染算式
         function renderExpression() {
             const exprBox = document.getElementById('expression');
             exprBox.textContent = expressionElements.length > 0 
@@ -183,7 +286,7 @@
                 : '请点击按钮输入算式';
         }
 
-        // 6. 清空算式
+        // 清空算式
         function clearExpression() {
             expressionElements = [];
             usedNumbers = [false, false, false, false];
@@ -191,7 +294,7 @@
             renderExpression();
         }
 
-        // 7. 删除最后一个完整元素
+        // 删除元素
         function deleteLastElement() {
             if (expressionElements.length === 0) return;
             
@@ -204,7 +307,7 @@
             renderExpression();
         }
 
-        // 8. 计算结果
+        // 计算结果
         function calculateResult() {
             if (expressionElements.length === 0) {
                 showResult('请先输入算式', 'danger');
@@ -232,11 +335,29 @@
             }
         }
 
-        // 9. 显示结果
+        // 显示结果
         function showResult(text, type) {
             const resultEl = document.getElementById('resultText');
             resultEl.textContent = text;
             resultEl.className = `text-xl font-semibold text-${type}`;
+        }
+
+        // --------------------------
+        // 音乐控制功能（完全匹配要求）
+        // --------------------------
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicBtn.textContent = "▶️";
+            } else {
+                bgMusic.play();
+                musicBtn.textContent = "⏸️";
+            }
+            isPlaying = !isPlaying;
         }
 
         // 初始化
