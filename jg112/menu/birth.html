@@ -78,6 +78,7 @@
             font-size: 15px;
             display: flex;
             justify-content: space-between;
+            gap: 8px;
         }
 
         .birthday-item.today {
@@ -90,6 +91,23 @@
             color: var(--orange);
             font-weight: bold;
             font-size: 14px;
+        }
+
+        .gender-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .gender-badge.male {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .gender-badge.female {
+            background: #fce7f3;
+            color: #be185d;
         }
 
         footer {
@@ -116,117 +134,100 @@
     </div>
 
     <script>
-        // 所有生日数据（已去掉性别）
+        // 新版完整生日数据（含性别，日期转为MMDD）
         const data = [
-            // 1月
-            {name: "孙ZK", date: "0101"},
-            { name: "朱YK", date: "0107" },
-            { name: "彭YYF", date: "0114" },
-            { name: "虞SC", date: "0113" },
-            { name: "仝ZY", date: "0114" },
-            { name: "周XY", date: "0120" },
-            { name: "陈SZ", date: "0127" },
-            { name: "吴FK", date: "0129" },
-            // 2月
-            { name: "冯YC", date: "0210" },
-            { name: "张JY", date: "0216" },
-            { name: "常老师", date: "0222" },
-            // 3月
-            { name: "钱LH", date: "0318" },
-            { name: "潘SX", date: "0320" },
-            { name: "徐RH", date: "0320" },
-            // 4月
-            { name: "王JR", date: "0401" },
-            { name: "吴T", date: "0402" },
-            { name: "陆PN", date: "0412" },
-            { name: "沈ZN", date: "0413" },
-            { name: "李JY", date: "0415" },
-            { name: "朱YL", date: "0416" },
-            { name: "赵HY", date: "0417" },
-            { name: "宋CX", date: "0420" },
-            // 5月
-            { name: "孙AD", date: "0502" },
-            { name: "何ZW", date: "0502" },
-            { name: "郭YM", date: "0503" },
-            { name: "郭YB", date: "0503" },
-            { name: "姜JY", date: "0504" },
-            { name: "陈CC", date: "0504" },
-            { name: "骆Y", date: "0509" },
-            { name: "刘Y", date: "0513" },
-            { name: "周YN", date: "0514" },
-            { name: "王JJ", date: "0516" },
-            { name: "余KR", date: "0518" },
-            { name: "朱YL", date: "0518" },
-            { name: "任YC", date: "0519" },
-            { name: "徐ZH", date: "0523" },
-            { name: "唐YR", date: "0530" },
-            // 6月
-            { name: "包YJ", date: "0605" },
-            { name: "张ZY", date: "0607" },
-            { name: "方MY", date: "0612" },
-            { name: "王YR", date: "0613" },
-            { name: "王CY", date: "0620" },
-            { name: "李PY", date: "0623" },
-            { name: "周RC", date: "0624" },
-            { name: "李HX", date: "0629" },
-            // 7月
-            { name: "黄SB", date: "0701" },
-            { name: "谢ZX", date: "0702" },
-            { name: "张XR", date: "0705" },
-            { name: "陈SJ", date: "0706" },
-            { name: "张JY", date: "0709" },
-            { name: "俞ZY", date: "0710" },
-            { name: "姜RH", date: "0711" },
-            { name: "吴YJ", date: "0712" },
-            { name: "张JJ", date: "0720" },
-            { name: "陈ZY", date: "0721" },
-            { name: "张MW", date: "0724" },
-            // 8月
-            { name: "冯Y", date: "0803" },
-            { name: "吴ZC", date: "0807" },
-            { name: "余MY", date: "0807" },
-            { name: "张ZXY", date: "0811" },
-            { name: "张XY", date: "0814" },
-            { name: "林ZH", date: "0815" },
-            { name: "周YC", date: "0816" },
-            { name: "梁TX", date: "0818" },
-            { name: "金QF", date: "0818" },
-            { name: "钱CY", date: "0819" },
-            { name: "许YC", date: "0822" },
-            { name: "沈YZ", date: "0828" },
-            { name: "张HW", date: "0830" },
-            // 9月
-            { name: "马ZM", date: "0903" },
-            { name: "毕R", date: "0904" },
-            { name: "郭X", date: "0905" },
-            { name: "倪HC", date: "0919" },
-            { name: "黄JW", date: "0929" },
-            // 10月
-            { name: "胡YH", date: "1001" },
-            { name: "任SX", date: "1003" },
-            { name: "刘ZQ", date: "1008" },
-            { name: "陈LF", date: "1021" },
-            { name: "吉HR", date: "1028" },
-            // 11月
-            { name: "李HY", date: "1101" },
-            { name: "徐RY", date: "1106" },
-            { name: "唐LJ", date: "1114" },
-            { name: "鲁XC", date: "1115" },
-            { name: "李KX", date: "1116" },
-            { name: "高WJ", date: "1123" },
-            { name: "眭YH", date: "1124" },
-            { name: "袁TF", date: "1126" },
-            { name: "袁TX", date: "1126" },
-            { name: "汪老师", date: "1130" },
-            // 12月
-            { name: "汤R", date: "1208" },
-            { name: "魏JH", date: "1210" },
-            { name: "孙老师", date: "1211" },
-            { name: "顾KQ", date: "1212" },
-            { name: "姚老师", date: "1215" },
-            { name: "朱YF", date: "1217" },
-            { name: "杨JY", date: "1228" },
-            { name: "何CY", date: "1231" }
+            { name: "郭旭", gender: "男", date: "0905" },
+            { name: "倪浩程", gender: "男", date: "0919" },
+            { name: "黄璟雯", gender: "女", date: "0929" },
+            { name: "胡熠华", gender: "男", date: "1001" },
+            { name: "刘杜桥", gender: "男", date: "1008" },
+            { name: "陈鸾飞", gender: "女", date: "1021" },
+            { name: "吉海瑞", gender: "男", date: "1028" },
+            { name: "李浩宇", gender: "男", date: "1101" },
+            { name: "唐李俊", gender: "男", date: "1114" },
+            { name: "李可欣", gender: "女", date: "1116" },
+            { name: "汤睿", gender: "男", date: "1208" },
+            { name: "顾康祈", gender: "男", date: "1212" },
+            { name: "杨季烨", gender: "男", date: "1228" },
+            { name: "何承佑", gender: "男", date: "1231" },
+            { name: "孙泽楷", gender: "男", date: "0101" },
+            { name: "虞翊驰", gender: "男", date: "0113" },
+            { name: "仝志远", gender: "男", date: "0114" },
+            { name: "周新沂", gender: "男", date: "0120" },
+            { name: "陈思泽", gender: "男", date: "0127" },
+            { name: "吴芳凯", gender: "男", date: "0129" },
+            { name: "张锦洋", gender: "男", date: "0216" },
+            { name: "徐睿涵", gender: "女", date: "0320" },
+            { name: "王靖睿", gender: "女", date: "0401" },
+            { name: "吴瞳", gender: "女", date: "0402" },
+            { name: "陆沛凝", gender: "女", date: "0412" },
+            { name: "沈子诺", gender: "男", date: "0413" },
+            { name: "李锦渝", gender: "男", date: "0415" },
+            { name: "朱雨岚", gender: "女", date: "0416" },
+            { name: "何知炜", gender: "男", date: "0502" },
+            { name: "郭煜溟", gender: "男", date: "0503" },
+            { name: "姜俊宇", gender: "男", date: "0504" },
+            { name: "陈辰臣", gender: "男", date: "0504" },
+            { name: "骆毅", gender: "男", date: "0509" },
+            { name: "刘羿", gender: "男", date: "0513" },
+            { name: "周一诺", gender: "女", date: "0514" },
+            { name: "余楷瑞", gender: "男", date: "0518" },
+            { name: "朱月缡", gender: "女", date: "0518" },
+            { name: "任宇宸", gender: "男", date: "0519" },
+            { name: "徐梓晗", gender: "女", date: "0523" },
+            { name: "唐远睿", gender: "男", date: "0530" },
+            { name: "包烨嘉", gender: "男", date: "0605" },
+            { name: "张朱逸", gender: "男", date: "0607" },
+            { name: "周瑞翀", gender: "男", date: "0624" },
+            { name: "黄世博", gender: "男", date: "0701" },
+            { name: "谢子询", gender: "男", date: "0702" },
+            { name: "陈世杰", gender: "男", date: "0706" },
+            { name: "姜汝衡", gender: "男", date: "0711" },
+            { name: "吴俣洁", gender: "女", date: "0712" },
+            { name: "陈致远", gender: "男", date: "0721" },
+            { name: "张铭威", gender: "男", date: "0724" },
+            { name: "余梦瑶", gender: "女", date: "0807" },
+            { name: "张心怡", gender: "女", date: "0814" },
+            { name: "梁唐轩", gender: "男", date: "0818" },
+            { name: "金圻霏", gender: "女", date: "0818" },
+            { name: "许翌晨", gender: "男", date: "0822" },
+            { name: "沈宥泽", gender: "男", date: "0828" },
+            { name: "张浩文", gender: "男", date: "0830" },
+            { name: "朱翊恺", gender: "男", date: "0107" },
+            { name: "彭杨已凡", gender: "男", date: "0114" },
+            { name: "冯姚宸", gender: "男", date: "0210" },
+            { name: "钱乐航", gender: "男", date: "0318" },
+            { name: "潘思轩", gender: "男", date: "0320" },
+            { name: "赵昊昱", gender: "男", date: "0417" },
+            { name: "宋陈轩", gender: "男", date: "0420" },
+            { name: "孙安迪", gender: "男", date: "0502" },
+            { name: "王嘉俊", gender: "男", date: "0516" },
+            { name: "方墨言", gender: "男", date: "0612" },
+            { name: "王悦然", gender: "女", date: "0613" },
+            { name: "王宸岩", gender: "女", date: "0620" },
+            { name: "李彭宇", gender: "男", date: "0623" },
+            { name: "李皓轩", gender: "男", date: "0629" },
+            { name: "张旭锐", gender: "男", date: "0705" },
+            { name: "张嘉寅", gender: "女", date: "0709" },
+            { name: "俞泽洋", gender: "男", date: "0710" },
+            { name: "张金璇", gender: "女", date: "0720" },
+            { name: "冯羿", gender: "男", date: "0803" },
+            { name: "吴紫宸", gender: "男", date: "0807" },
+            { name: "张哲夏煜", gender: "男", date: "0811" },
+            { name: "林子赫", gender: "男", date: "0815" },
+            { name: "周昱成", gender: "男", date: "0816" },
+            { name: "钱晨玥", gender: "女", date: "0819" },
+            { name: "马子茗", gender: "女", date: "0903" },
+            { name: "毕然", gender: "女", date: "0904" },
+            { name: "任思学", gender: "男", date: "1003" },
+            { name: "徐睿彧", gender: "男", date: "1106" },
+            { name: "鲁晓晨", gender: "男", date: "1115" },
+            { name: "高雯婕", gender: "女", date: "1123" },
+            { name: "眭宇浩", gender: "男", date: "1124" },
+            { name: "袁庭丰", gender: "男", date: "1126" },
+            { name: "袁庭轩", gender: "男", date: "1126" },
+            { name: "魏嘉豪", gender: "男", date: "1210" },
+            { name: "朱宇帆", gender: "男", date: "1217" }
         ];
 
         // 获取今天 月日（MMDD）
@@ -270,7 +271,12 @@
                 if (p.date === todayStr) li.classList.add('today');
                 
                 const dateText = p.date.slice(0, 2) + '-' + p.date.slice(2, 4);
-                li.innerHTML = `<span>${p.name}</span> <span>${dateText}</span>`;
+                // 渲染姓名+性别+日期
+                li.innerHTML = `
+                    <span>${p.name}</span>
+                    <span class="gender-badge ${p.gender === '男' ? 'male' : 'female'}">${p.gender}</span>
+                    <span>${dateText}</span>
+                `;
                 ul.appendChild(li);
             });
 
